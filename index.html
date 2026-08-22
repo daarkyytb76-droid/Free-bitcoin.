@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pomnub</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    html, body {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background: #000;
+    }
+    .bg {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      z-index: 1;
+    }
+    .overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 2;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(0,0,0,0.3);
+      cursor: pointer;
+      transition: opacity 0.3s;
+    }
+    .overlay.hidden {
+      opacity: 0;
+      pointer-events: none;
+    }
+    .play-btn {
+      font-family: system-ui, sans-serif;
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: #fff;
+      background: #ff9900;
+      border: none;
+      padding: 18px 36px;
+      border-radius: 8px;
+      cursor: pointer;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+    }
+    .play-btn:hover {
+      background: #ffaa22;
+    }
+  </style>
+</head>
+<body>
+  <img class="bg" src="1000321982.jpg" alt="">
+  <audio id="audio" src="audio_max_volume.m4a" loop preload="auto"></audio>
+  <div class="overlay" id="overlay">
+    <button class="play-btn" id="playBtn">▶ Clique pour lancer</button>
+  </div>
+  <script>
+    const audio = document.getElementById('audio');
+    const overlay = document.getElementById('overlay');
+    const playBtn = document.getElementById('playBtn');
+
+    function start() {
+      audio.volume = 1.0;
+      audio.play().then(() => {
+        overlay.classList.add('hidden');
+      }).catch(err => {
+        console.log('Play failed:', err);
+      });
+    }
+
+    playBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      start();
+    });
+    overlay.addEventListener('click', start);
+
+    // Essaye l'autoplay (souvent bloqué sans interaction)
+    audio.play().then(() => {
+      overlay.classList.add('hidden');
+    }).catch(() => {});
+  </script>
+</body>
+</html>
